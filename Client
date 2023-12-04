@@ -1,0 +1,31 @@
+import socket
+import threading
+
+# Function to receive messages from the server
+def receive_messages():
+    while True:
+        try:
+            message = client.recv(1024).decode('utf-8')
+            print(message)
+        except Exception as e:
+            print(f"Error: {e}")
+            break
+
+# Create a socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Set up host and port
+host = '127.0.0.1'
+port = 5555
+
+# Connect to server
+client.connect((host, port))
+
+# Start a thread to receive messages
+receive_thread = threading.Thread(target=receive_messages)
+receive_thread.start()
+
+# Function to send messages to the server
+while True:
+    message = input('')
+    client.send(message.encode('utf-8'))
